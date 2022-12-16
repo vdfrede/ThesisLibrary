@@ -11,7 +11,7 @@ import java.util.Map.Entry;
 
 public class Diagram {
     private ArrayList<Class<?>> classes = new ArrayList<Class<?>>();
-    private HashMap<String, HashMap<String, String>> r2 = new HashMap<String, HashMap<String, String>>();
+    private HashMap<String, HashMap<String, String>> relationships = new HashMap<String, HashMap<String, String>>();
     private String diagramTitle = "";
     private boolean includePackages = false;
     private ArrayList<String> notes = new ArrayList<>();
@@ -75,18 +75,18 @@ public class Diagram {
             nameC1 = simpleName(nameC1);
             nameC2 = simpleName(nameC2);
         }
-        if (r2.containsKey(nameC1)) {
-            if (!r2.get(nameC1).containsKey(nameC2)) {
-                r2.get(nameC1).put(nameC2, determineRelationship("Extension"));
+        if (relationships.containsKey(nameC1)) {
+            if (!relationships.get(nameC1).containsKey(nameC2)) {
+                relationships.get(nameC1).put(nameC2, determineRelationship("Extension"));
             }
         } else {
             HashMap<String, String> temp = new HashMap<>();
             temp.put(nameC2, determineRelationship("Extension"));
-            r2.put(nameC1, temp);
+            relationships.put(nameC1, temp);
         }
     }
 
-    // Following method uses overriding to make String parameter optional when
+    // Following method uses overloading to make String parameter optional when
     // adding a relationship between classes
     public void addRelationship(Class<?> c1, Class<?> c2, String s) {
         String nameC1 = c1.getName();
@@ -95,13 +95,13 @@ public class Diagram {
             nameC1 = simpleName(nameC1);
             nameC2 = simpleName(nameC2);
         }
-        if (r2.containsKey(nameC1)) {
-            r2.get(nameC1).put(nameC2, determineRelationship(s));
+        if (relationships.containsKey(nameC1)) {
+            relationships.get(nameC1).put(nameC2, determineRelationship(s));
 
         } else {
             HashMap<String, String> temp = new HashMap<>();
             temp.put(nameC2, determineRelationship(s));
-            r2.put(nameC1, temp);
+            relationships.put(nameC1, temp);
         }
     }
 
@@ -130,8 +130,8 @@ public class Diagram {
             d = d + "\tClass" + " " + name + "{" + getFields(c) + "\n\t" + getMethods(c) + "\n\t}\n";
             findRelations(c);
         }
-        if (r2 != null) {
-            for (Entry<String, HashMap<String, String>> entry : r2.entrySet()) {
+        if (relationships != null) {
+            for (Entry<String, HashMap<String, String>> entry : relationships.entrySet()) {
                 String nameC1 = simpleName(entry.getKey());
                 for (Entry<String, String> e : entry.getValue().entrySet()) {
                     String nameC2 = simpleName(e.getKey());
@@ -177,13 +177,13 @@ public class Diagram {
     // Method that changes the linestyle between two classes
     public void changeLineStyle(Class<?> c1, Class<?> c2, String lineStyle) {
         addRelationship(c1, c2);
-        String holder = r2.get(c1.getName()).get(c2.getName());
+        String holder = relationships.get(c1.getName()).get(c2.getName());
         String temp[] = holder.split("(?<=-)", 2);
         String modifiedLine = temp[0] + "[" + lineStyle + "]" + temp[1];
-        HashMap<String, String> t = r2.get(c1.getName());
+        HashMap<String, String> t = relationships.get(c1.getName());
         t.put(c2.getName(), modifiedLine);
 
-        r2.put(c1.getName(), t);
+        relationships.put(c1.getName(), t);
     }
 
     // Method that adds a floating note
