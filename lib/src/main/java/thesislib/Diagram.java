@@ -26,7 +26,7 @@ public class Diagram {
     }
 
     // Method that adds one class
-    public void add(Class<?> newClass) {
+    public void addClass(Class<?> newClass) {
         classes.add(newClass);
     }
 
@@ -106,7 +106,7 @@ public class Diagram {
     }
 
     // Method to include or exclude package info from diagram
-    public void includePackages(boolean include) {
+    public void includePackagesInformation(boolean include) {
         includePackages = include;
     }
 
@@ -149,7 +149,7 @@ public class Diagram {
     }
 
     // Method that prints the diagram to a file
-    public void printDiagram() {
+    public void printDiagramToFile() {
         try {
             FileWriter myWriter = new FileWriter(fileOut);
             myWriter.write(returnDiagramPlantUml());
@@ -231,4 +231,5 @@ public class Diagram {
             System.out.println(e);
         }
     }
+
 }
