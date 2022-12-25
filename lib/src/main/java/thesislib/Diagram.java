@@ -149,7 +149,7 @@ public class Diagram {
     }
 
     // Method that prints the diagram to a file
-    public void printDiagramToFile() {
+    public void generateDiagramCode() {
         try {
             FileWriter myWriter = new FileWriter(fileOut);
             myWriter.write(returnDiagramPlantUml());
